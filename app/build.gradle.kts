@@ -56,10 +56,6 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-//    implementation("io.github.inflationx:calligraphy3:3.1.1")
-//    implementation("io.github.inflationx:viewpump:2.0.3")
-
-
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-android-compiler:2.48")
 
@@ -77,7 +73,22 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 
 
-    // implementation("com.duolingo.open:rtl-viewpager:2.0.0")
-    implementation("joda-time:joda-time:2.12.7")
+
+    // Espresso dependencies
+    androidTestImplementation( "androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation( "androidx.test.espresso:espresso-contrib:3.5.1")
+    androidTestImplementation( "androidx.test.espresso:espresso-accessibility:3.5.1")
+    androidTestImplementation( "androidx.test.espresso:espresso-web:3.5.1")
+    androidTestImplementation( "androidx.test.espresso.idling:idling-concurrent:3.5.1")
+
+    // The following Espresso dependency can be either "implementation",
+    // or "androidTestImplementation", depending on whether you want the
+    // dependency to appear on your APK"s compile classpath or the test APK
+    // classpath.
+    androidTestImplementation( "androidx.test.espresso:espresso-idling-resource:3.5.1")
+
+
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
 }

@@ -37,9 +37,9 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var storeCalendarTaskViewModel: StoreCalendarTaskViewModel
-    private lateinit var deleteCalendarTaskViewModels: DeleteCalendarTaskViewModels
-    private lateinit var getCalenderTaskViewModel: GetCalenderTaskViewModel
+    lateinit var storeCalendarTaskViewModel: StoreCalendarTaskViewModel
+    lateinit var deleteCalendarTaskViewModels: DeleteCalendarTaskViewModels
+    lateinit var getCalenderTaskViewModel: GetCalenderTaskViewModel
 
     private lateinit var taskAdapter: TaskAdapter
 
@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
     }
 
 
-    private fun storeCalendarTask(title: String, description: String) {
+    fun storeCalendarTask(title: String, description: String) {
         if (Utility.isNetworkAvailable(this)) {
             val storeTaskRequest = StoreTaskRequest(userId, TaskDetail(title, description))
             storeCalendarTaskViewModel.storeCalendarTask(storeTaskRequest)
