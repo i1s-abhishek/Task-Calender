@@ -1,4 +1,5 @@
 # Calendar Application
+![Task Calendar](https://github.com/shantanupatil/sharecare/blob/master/Share%20Care.png)
 
 This is a simple calendar application with task management functionality. Users can select a year and month to view a calendar, add tasks to specific dates, and manage tasks.
 
@@ -29,3 +30,9 @@ To run this application locally, follow these steps:
 
 ```bash
 git clone https://github.com/i1s-abhishek/Task-Calender.git
+
+
+You can directly refer this classes to understand how the code works:
+- Retrofit: Refer to these classes directly:  [Retrofit Classes](https://github.com/i1s-abhishek/Task-Calender/tree/main/app/src/main/java/com/abhishek/calendar/network)
+- Custom Calender views[Kotlin Classes](https://github.com/i1s-abhishek/Task-Calender/tree/main/app/src/main/java/com/abhishek/calendar/customViews)
+- DaggerHilt: [Dependency Injection](https://github.com/i1s-abhishek/Task-Calender/tree/main/app/src/main/java/com/abhishek/calendar/viewModels)
