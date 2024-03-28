@@ -1,0 +1,39 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="calendar_view_background_color">?android:attr/colorBackground</item>
+        <item name="calendar_view_month_text_color">?attr/colorOnBackground</item>
+        <item name="calendar_view_selected_day_text_color">#FFFFFF</item>
+        <item name="calendar_view_selected_day_background_color">#20BEB2</item>
+        <item name="calendar_view_current_day_ring">#CCCCCC</item>
+        <item name="calendar_view_day_of_the_month_text_color">?attr/colorOnBackground</item>
+        <item name="calendar_view_circle_1">#EB5757</item>
+        <item name="calendar_view_circle_2">#55c6da</item>
+        <item name="calendar_view_month_arrow">?attr/colorOnBackground</item>
+    </style>
+
+
+    <style name="CalendarMonthText">
+        <item name="fontPath">fonts/OverrideThisWithYourFontPath</item>
+        <item name="android:textSize">@dimen/calendar_month_font</item>
+    </style>
+
+    <style name="CalendarMonthArrow">
+        <item name="android:tint">?attr/calendar_view_month_arrow</item>
+    </style>
+
+    <style name="CalendarDayOfTheWeekText">
+        <item name="fontPath">fonts/OverrideThisWithYourFontPath</item>
+        <item name="android:textSize">@dimen/calendar_day_of_week_font</item>
+    </style>
+
+    <style name="CalendarDayOfTheMonthText">
+        <item name="fontPath">fonts/OverrideThisWithYourFontPath</item>
+        <item name="android:textSize">@dimen/calendar_day_of_the_month_font</item>
+    </style>
+
+    <style name="DatePickerLightStyle">
+        <item name="android:textColorPrimary">@color/md_grey_800_dark</item>
+    </style>
+
+</resources>
