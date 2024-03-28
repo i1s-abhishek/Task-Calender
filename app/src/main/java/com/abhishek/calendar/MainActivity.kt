@@ -20,7 +20,6 @@ import com.abhishek.calendar.models.request.GetCalendarTaskListRequest
 import com.abhishek.calendar.models.request.StoreTaskRequest
 import com.abhishek.calendar.models.request.TaskDetail
 import com.abhishek.calendar.models.response.Tasks
-import com.abhishek.calendar.network.ApiHelperImpl
 import com.abhishek.calendar.network.RetrofitBuilder
 import com.abhishek.calendar.network.Status
 import com.abhishek.calendar.utils.DialogUtils
@@ -29,19 +28,21 @@ import com.abhishek.calendar.utils.Utility
 import com.abhishek.calendar.viewModels.DeleteCalendarTaskViewModels
 import com.abhishek.calendar.viewModels.GetCalenderTaskViewModel
 import com.abhishek.calendar.viewModels.StoreCalendarTaskViewModel
-import com.abhishek.calendar.viewModels.ViewModelFactory
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Date
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListener,
     OnTaskInputListener, OnTaskDeleteListener {
 
     private lateinit var binding: ActivityMainBinding
+
     private lateinit var storeCalendarTaskViewModel: StoreCalendarTaskViewModel
     private lateinit var deleteCalendarTaskViewModels: DeleteCalendarTaskViewModels
     private lateinit var getCalenderTaskViewModel: GetCalenderTaskViewModel
+
     private lateinit var taskAdapter: TaskAdapter
 
     private var tasks: ArrayList<Tasks> = arrayListOf()
@@ -60,23 +61,9 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
     }
 
     private fun setupViewModel() {
-        storeCalendarTaskViewModel = ViewModelProvider(
-            this, ViewModelFactory(
-                ApiHelperImpl(RetrofitBuilder.apiService)
-            )
-        )[StoreCalendarTaskViewModel::class.java]
-
-        getCalenderTaskViewModel = ViewModelProvider(
-            this, ViewModelFactory(
-                ApiHelperImpl(RetrofitBuilder.apiService)
-            )
-        )[GetCalenderTaskViewModel::class.java]
-
-        deleteCalendarTaskViewModels = ViewModelProvider(
-            this, ViewModelFactory(
-                ApiHelperImpl(RetrofitBuilder.apiService)
-            )
-        )[DeleteCalendarTaskViewModels::class.java]
+        storeCalendarTaskViewModel = ViewModelProvider(this)[StoreCalendarTaskViewModel::class.java]
+        getCalenderTaskViewModel = ViewModelProvider(this,)[GetCalenderTaskViewModel::class.java]
+        deleteCalendarTaskViewModels = ViewModelProvider(this,)[DeleteCalendarTaskViewModels::class.java]
     }
 
     private fun setupUI() {
@@ -148,7 +135,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
             val storeTaskRequest = StoreTaskRequest(userId, TaskDetail(title, description))
             storeCalendarTaskViewModel.storeCalendarTask(storeTaskRequest)
         } else {
-            Utility.showSnackBar(binding!!.recyclerViewTasks, getString(R.string.no_internet))
+            Utility.showSnackBar(binding.recyclerViewTasks, getString(R.string.no_internet))
         }
     }
 
@@ -157,7 +144,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
             val getCalendarTaskListRequest = GetCalendarTaskListRequest(userId)
             getCalenderTaskViewModel.getCalenderTaskList(getCalendarTaskListRequest)
         } else {
-            Utility.showSnackBar(binding!!.recyclerViewTasks, getString(R.string.no_internet))
+            Utility.showSnackBar(binding.recyclerViewTasks, getString(R.string.no_internet))
         }
     }
 
@@ -166,7 +153,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
             val deleteTaskRequest = DeleteTaskRequest(userId, taskId)
             deleteCalendarTaskViewModels.deleteCalendarTask(deleteTaskRequest)
         } else {
-            Utility.showSnackBar(binding!!.recyclerViewTasks, getString(R.string.no_internet))
+            Utility.showSnackBar(binding.recyclerViewTasks, getString(R.string.no_internet))
         }
     }
 
@@ -181,7 +168,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                             Utility.showToast(this, getString(R.string.added_task_message))
                         }
                     }
-                    binding!!.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
                 }
 
                 Status.LOADING -> showProgressBar()
@@ -200,12 +187,12 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                         if (!it.tasks.isNullOrEmpty()) {
                             taskAdapter.setTasks(it.tasks)
                             Utility.showToast(this, getString(R.string.task_fetch_message))
-                            binding!!.titleTextView.visibility = View.VISIBLE
+                            binding.titleTextView.visibility = View.VISIBLE
                         } else {
-                            binding!!.titleTextView.visibility = View.GONE
+                            binding.titleTextView.visibility = View.GONE
                         }
                     }
-                    binding!!.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
 
                 }
 
@@ -227,7 +214,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                             Utility.showToast(this, getString(R.string.task_deleted_message))
                         }
                     }
-                    binding!!.progressBar.visibility = View.GONE
+                    binding.progressBar.visibility = View.GONE
                 }
 
                 Status.LOADING -> showProgressBar()

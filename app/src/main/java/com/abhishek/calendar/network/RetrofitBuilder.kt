@@ -1,11 +1,18 @@
 package com.abhishek.calendar.network
 
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
+@Module
+@InstallIn(SingletonComponent::class)
 object RetrofitBuilder {
 
     private const val BASE_URL = "http://dev.frndapp.in:8085/"
@@ -22,11 +29,25 @@ object RetrofitBuilder {
 
     }
 
-    private fun getRetrofit(): Retrofit {
+    @Singleton
+    @Provides
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder().baseUrl(BASE_URL).client(getLogging())
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
-    val apiService: ApiService = getRetrofit().create(ApiService::class.java)
+    @Singleton
+    @Provides
+    fun provideApiService(): ApiService {
+        return  provideRetrofit().create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiHelper(apiService: ApiService): ApiHelper {
+        return ApiHelperImpl(apiService)
+    }
+
+    val apiService: ApiService = provideRetrofit().create(ApiService::class.java)
 
 }

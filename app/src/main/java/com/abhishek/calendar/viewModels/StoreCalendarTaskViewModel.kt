@@ -8,9 +8,12 @@ import com.abhishek.calendar.models.request.StoreTaskRequest
 import com.abhishek.calendar.models.response.StoreTaskResponse
 import com.abhishek.calendar.network.ApiHelper
 import com.abhishek.calendar.network.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class StoreCalendarTaskViewModel(private val apiHelper: ApiHelper) : ViewModel() {
+@HiltViewModel
+class StoreCalendarTaskViewModel @Inject constructor (private val apiHelper: ApiHelper) : ViewModel() {
 
     private val storeCalendarTaskResult = MutableLiveData<Resource<StoreTaskResponse>>()
 

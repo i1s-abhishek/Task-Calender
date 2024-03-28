@@ -6,6 +6,10 @@ import com.abhishek.calendar.models.request.StoreTaskRequest
 import com.abhishek.calendar.models.response.DeleteTaskResponse
 import com.abhishek.calendar.models.response.GetCalendarTaskListResponse
 import com.abhishek.calendar.models.response.StoreTaskResponse
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 

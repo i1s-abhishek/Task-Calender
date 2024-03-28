@@ -8,9 +8,12 @@ import com.abhishek.calendar.models.request.DeleteTaskRequest
 import com.abhishek.calendar.models.response.DeleteTaskResponse
 import com.abhishek.calendar.network.ApiHelper
 import com.abhishek.calendar.network.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DeleteCalendarTaskViewModels(private val apiHelper: ApiHelper) : ViewModel() {
+@HiltViewModel
+class DeleteCalendarTaskViewModels @Inject constructor(private val apiHelper: ApiHelper) : ViewModel() {
 
     private val deleteTaskResponseResult = MutableLiveData<Resource<DeleteTaskResponse>>()
 

@@ -8,9 +8,12 @@ import com.abhishek.calendar.models.request.GetCalendarTaskListRequest
 import com.abhishek.calendar.models.response.GetCalendarTaskListResponse
 import com.abhishek.calendar.network.ApiHelper
 import com.abhishek.calendar.network.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class GetCalenderTaskViewModel(private val apiHelper: ApiHelper) : ViewModel() {
+@HiltViewModel
+class GetCalenderTaskViewModel @Inject constructor(private val apiHelper: ApiHelper) : ViewModel() {
 
     private val getCalenderTaskResult = MutableLiveData<Resource<GetCalendarTaskListResponse>>()
 
