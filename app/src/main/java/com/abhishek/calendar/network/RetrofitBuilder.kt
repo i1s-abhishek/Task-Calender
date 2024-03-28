@@ -48,6 +48,4 @@ object RetrofitBuilder {
         return ApiHelperImpl(apiService)
     }
 
-    val apiService: ApiService = provideRetrofit().create(ApiService::class.java)
-
 }

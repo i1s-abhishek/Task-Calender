@@ -20,7 +20,6 @@ import com.abhishek.calendar.models.request.GetCalendarTaskListRequest
 import com.abhishek.calendar.models.request.StoreTaskRequest
 import com.abhishek.calendar.models.request.TaskDetail
 import com.abhishek.calendar.models.response.Tasks
-import com.abhishek.calendar.network.RetrofitBuilder
 import com.abhishek.calendar.network.Status
 import com.abhishek.calendar.utils.DialogUtils
 import com.abhishek.calendar.utils.ItemSpacingDecoration
@@ -31,7 +30,6 @@ import com.abhishek.calendar.viewModels.StoreCalendarTaskViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Date
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListener,
@@ -186,7 +184,6 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                     it.data?.let { it ->
                         if (!it.tasks.isNullOrEmpty()) {
                             taskAdapter.setTasks(it.tasks)
-                            Utility.showToast(this, getString(R.string.task_fetch_message))
                             binding.titleTextView.visibility = View.VISIBLE
                         } else {
                             binding.titleTextView.visibility = View.GONE

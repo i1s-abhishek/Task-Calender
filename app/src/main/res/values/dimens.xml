@@ -10,7 +10,7 @@
     <dimen name="calendar_day_of_week_font">16sp</dimen>
     <dimen name="calendar_day_of_the_month_font">16sp</dimen>
     <dimen name="item_spacing">8dp</dimen>
-    <dimen name="item_spacing_start">16dp</dimen>
+    <dimen name="item_spacing_start">12dp</dimen>
     <dimen name="item_spacing_top">2dp</dimen>
     <dimen name="item_spacing_end">16dp</dimen>
     <dimen name="item_spacing_bottom">2dp</dimen>
