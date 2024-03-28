@@ -122,8 +122,8 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                 selectedDateCalendar.set(Calendar.MONTH, selectedMonth)
 
                 binding.calendarPicker.date = selectedDateCalendar.time
-                binding.calendarPicker.markCircleImage1(selectedDateCalendar.time)
-                binding.calendarPicker.markCircleImage2(selectedDateCalendar.time)
+//                binding.calendarPicker.markCircleImage1(selectedDateCalendar.time)
+//                binding.calendarPicker.markCircleImage2(selectedDateCalendar.time)
             }.show()
     }
 
