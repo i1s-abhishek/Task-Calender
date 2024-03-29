@@ -25,13 +25,11 @@
     <style name="CalendarDayOfTheWeekText">
         <item name="fontPath">fonts/OverrideThisWithYourFontPath</item>
         <item name="android:textSize">@dimen/calendar_day_of_week_font</item>
-        <item name="android:textColor">?attr/calendar_view_day_of_the_month_text_color</item>
     </style>
 
     <style name="CalendarDayOfTheMonthText">
         <item name="fontPath">fonts/OverrideThisWithYourFontPath</item>
         <item name="android:textSize">@dimen/calendar_day_of_the_month_font</item>
-        <item name="android:textColor">@attr/calendar_view_day_of_the_month_text_color</item>
     </style>
 
 </resources>
