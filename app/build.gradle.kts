@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -73,22 +74,26 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.4.1")
 
 
-
     // Espresso dependencies
-    androidTestImplementation( "androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation( "androidx.test.espresso:espresso-contrib:3.5.1")
-    androidTestImplementation( "androidx.test.espresso:espresso-accessibility:3.5.1")
-    androidTestImplementation( "androidx.test.espresso:espresso-web:3.5.1")
-    androidTestImplementation( "androidx.test.espresso.idling:idling-concurrent:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-accessibility:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-web:3.5.1")
+    androidTestImplementation("androidx.test.espresso.idling:idling-concurrent:3.5.1")
 
     // The following Espresso dependency can be either "implementation",
     // or "androidTestImplementation", depending on whether you want the
     // dependency to appear on your APK"s compile classpath or the test APK
     // classpath.
-    androidTestImplementation( "androidx.test.espresso:espresso-idling-resource:3.5.1")
+    androidTestImplementation("androidx.test.espresso:espresso-idling-resource:3.5.1")
 
 
-    testImplementation ("androidx.arch.core:core-testing:2.2.0")
-    testImplementation ("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
 
+
+    //Room Database
+    implementation("androidx.room:room-runtime:2.6.1")
+    kapt("androidx.room:room-compiler:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
 }

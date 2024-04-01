@@ -1,7 +1,6 @@
 package com.abhishek.calendar
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.abhishek.calendar.viewModels.DeleteCalendarTaskViewModels
 import com.abhishek.calendar.viewModels.GetCalenderTaskViewModel
@@ -13,7 +12,6 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.Date
 
 @RunWith(MockitoJUnitRunner::class)
 class MainActivityTest {
@@ -50,7 +48,7 @@ class MainActivityTest {
         val description = "Test Description"
 
         // When
-        mainActivity.storeCalendarTask(title, description)
+        mainActivity.storeCalendarTask(title, description, date)
 
         // Then
         verify(storeCalendarTaskViewModel).storeCalendarTask(any())

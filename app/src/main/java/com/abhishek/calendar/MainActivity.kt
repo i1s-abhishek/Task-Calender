@@ -14,6 +14,7 @@ import com.abhishek.calendar.adapter.TaskAdapter
 import com.abhishek.calendar.customViews.CustomCalendarView
 import com.abhishek.calendar.dailogs.CustomAlertDialog
 import com.abhishek.calendar.databinding.ActivityMainBinding
+import com.abhishek.calendar.db.CalendarTaskViewModel
 import com.abhishek.calendar.interfaces.OnTaskDeleteListener
 import com.abhishek.calendar.interfaces.OnTaskInputListener
 import com.abhishek.calendar.models.request.DeleteTaskRequest
@@ -28,6 +29,8 @@ import com.abhishek.calendar.utils.Utility
 import com.abhishek.calendar.viewModels.DeleteCalendarTaskViewModels
 import com.abhishek.calendar.viewModels.GetCalenderTaskViewModel
 import com.abhishek.calendar.viewModels.StoreCalendarTaskViewModel
+import com.abhishek.calendar.db.table.CalendarTaskTable
+import com.abhishek.calendar.fragments.DayTaskListFragment
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Calendar
 import java.util.Date
@@ -41,6 +44,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
     lateinit var storeCalendarTaskViewModel: StoreCalendarTaskViewModel
     lateinit var deleteCalendarTaskViewModels: DeleteCalendarTaskViewModels
     lateinit var getCalenderTaskViewModel: GetCalenderTaskViewModel
+    private lateinit var calendarTaskViewModel: CalendarTaskViewModel
 
     private lateinit var taskAdapter: TaskAdapter
 
@@ -48,6 +52,8 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
     private lateinit var taskToBeDeleted: Tasks
     private var taskToBeDeletedPosition = -1
     private val userId = 1
+    private var isActive = false
+    private lateinit var calendarTaskTable: CalendarTaskTable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +68,10 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
 
     private fun setupViewModel() {
         storeCalendarTaskViewModel = ViewModelProvider(this)[StoreCalendarTaskViewModel::class.java]
-        getCalenderTaskViewModel = ViewModelProvider(this,)[GetCalenderTaskViewModel::class.java]
-        deleteCalendarTaskViewModels = ViewModelProvider(this,)[DeleteCalendarTaskViewModels::class.java]
+        getCalenderTaskViewModel = ViewModelProvider(this)[GetCalenderTaskViewModel::class.java]
+        deleteCalendarTaskViewModels =
+            ViewModelProvider(this)[DeleteCalendarTaskViewModels::class.java]
+        calendarTaskViewModel = ViewModelProvider(this)[CalendarTaskViewModel::class.java]
     }
 
     private fun setupUI() {
@@ -130,8 +138,10 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
     }
 
 
-    fun storeCalendarTask(title: String, description: String) {
+    fun storeCalendarTask(title: String, description: String, date: Date) {
         if (Utility.isNetworkAvailable(this)) {
+            calendarTaskTable =
+                CalendarTaskTable(0, userId, title, description, Utility.getFormattedDate(date))
             val storeTaskRequest = StoreTaskRequest(userId, TaskDetail(title, description))
             storeCalendarTaskViewModel.storeCalendarTask(storeTaskRequest)
         } else {
@@ -165,6 +175,9 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                     it.data?.let { it ->
                         if (it.status == "Success") {
                             getCalendarTaskList(1)
+                            calendarTaskViewModel.insertCalenderTask(
+                                this, calendarTaskTable
+                            )
                             Utility.showToast(this, getString(R.string.added_task_message))
                         }
                     }
@@ -210,6 +223,11 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
                             if (taskToBeDeletedPosition != -1) taskAdapter.removeTask(
                                 taskToBeDeletedPosition
                             );
+                            calendarTaskViewModel.deleteCalenderTaskByTaskTaskDetail(
+                                this,
+                                taskToBeDeleted.taskDetail?.title ?: "",
+                                taskToBeDeleted.taskDetail?.description ?: ""
+                            )
                             Utility.showToast(this, getString(R.string.task_deleted_message))
                         }
                     }
@@ -236,7 +254,7 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
     }
 
     override fun onDayClick(date: Date) {
-        val dialog = CustomAlertDialog(this, this)
+        val dialog = CustomAlertDialog(this, this, date)
         dialog.show()
     }
 
@@ -250,9 +268,14 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
         showGoToDateDialog(date)
     }
 
+    override fun onShowTaskOfDayClick(date: Date?) {
+        isActive = true
+        getDayTaskListData(date)
+    }
 
-    override fun onTaskInput(title: String, description: String) {
-        storeCalendarTask(title, description)
+
+    override fun onTaskInput(title: String, description: String, date: Date) {
+        storeCalendarTask(title, description, date)
     }
 
     override fun onDeleteClicked(position: Int) {
@@ -268,4 +291,30 @@ class MainActivity : AppCompatActivity(), CustomCalendarView.CustomCalendarListe
         DialogUtils.showTaskDetailDialog(this, taskDetail)
     }
 
+    private fun getDayTaskListData(date: Date?) {
+        var firebaseItemList: ArrayList<CalendarTaskTable> = arrayListOf()
+        if (date != null) {
+            calendarTaskViewModel.getCalendarTaskByDate(Utility.getFormattedDate(date))
+                ?.observe(this, Observer {
+                    if (isActive) {
+                        isActive = false
+                        if (!it.isNullOrEmpty()) {
+                            firebaseItemList = it as ArrayList<CalendarTaskTable>
+                            val taskListFragment = DayTaskListFragment().apply {
+                                arguments = Bundle().apply {
+                                    putParcelableArrayList("taskList", firebaseItemList)
+                                    putSerializable("date", date)
+                                }
+                            }
+                            supportFragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, taskListFragment)
+                                .addToBackStack(null).commit()
+                        } else {
+                            Utility.showToast(this, getString(R.string.task_of_day_message))
+                        }
+                    }
+                })
+        }
+
+    }
 }
