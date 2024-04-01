@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2016 Marco Hernaiz Cao
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.abhishek.calendar.customViews;
 
 import android.annotation.SuppressLint;
@@ -20,13 +5,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.abhishek.calendar.R;
@@ -40,7 +28,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class CustomCalendarView extends LinearLayout {
+public class CustomCalendarView extends LinearLayout implements GestureDetector.OnGestureListener {
 
     private static final String DAY_OF_THE_WEEK_TEXT = "dayOfTheWeekText";
     private static final String DAY_OF_THE_WEEK_LAYOUT = "dayOfTheWeekLayout";
@@ -54,6 +42,9 @@ public class CustomCalendarView extends LinearLayout {
 
     private ImageView leftButton;
     private ImageView rightButton;
+
+    private ImageView showTaskOfDay;
+
     private View rootView;
     private ViewGroup customCalendarMonthLayout;
     private CustomCalendarListener customCalendarListener;
@@ -65,13 +56,11 @@ public class CustomCalendarView extends LinearLayout {
         @Override
         public void onClick(View view) {
 
-            // Extract day selected
             ViewGroup dayOfTheMonthContainer = (ViewGroup) view;
             String tagId = (String) dayOfTheMonthContainer.getTag();
             tagId = tagId.substring(DAY_OF_THE_MONTH_LAYOUT.length(), tagId.length());
             TextView dayOfTheMonthText = view.findViewWithTag(DAY_OF_THE_MONTH_TEXT + tagId);
 
-            // Extract the day from the text
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR));
             calendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH));
@@ -79,7 +68,6 @@ public class CustomCalendarView extends LinearLayout {
 
             markDayAsSelectedDay(calendar.getTime());
 
-            // Fire event
             if (customCalendarListener == null) {
                 throw new IllegalStateException("You must assign a valid CustomCalendarListener first!");
             } else {
@@ -91,13 +79,11 @@ public class CustomCalendarView extends LinearLayout {
         @Override
         public boolean onLongClick(View view) {
 
-            // Extract day selected
             ViewGroup dayOfTheMonthContainer = (ViewGroup) view;
             String tagId = (String) dayOfTheMonthContainer.getTag();
             tagId = tagId.substring(DAY_OF_THE_MONTH_LAYOUT.length(), tagId.length());
             TextView dayOfTheMonthText = view.findViewWithTag(DAY_OF_THE_MONTH_TEXT + tagId);
 
-            // Extract the day from the text
             Calendar calendar = Calendar.getInstance();
             calendar.set(Calendar.YEAR, currentCalendar.get(Calendar.YEAR));
             calendar.set(Calendar.MONTH, currentCalendar.get(Calendar.MONTH));
@@ -105,7 +91,6 @@ public class CustomCalendarView extends LinearLayout {
 
             markDayAsSelectedDay(calendar.getTime());
 
-            // Fire event
             if (customCalendarListener == null) {
                 throw new IllegalStateException("You must assign a valid CustomCalendarListener first!");
             } else {
@@ -132,7 +117,6 @@ public class CustomCalendarView extends LinearLayout {
     }
 
     private static String checkSpecificLocales(String dayOfTheWeekString, int i) {
-        // Set Wednesday as "X" in Spanish Locale.getDefault()
         if (i == 4 && "ES".equals(Locale.getDefault().getCountry())) {
             dayOfTheWeekString = "X";
         } else {
@@ -198,26 +182,15 @@ public class CustomCalendarView extends LinearLayout {
 
         currentCalendar = Calendar.getInstance();
         setDate(currentCalendar.getTime());
+        gestureDetector = new GestureDetector(getContext(), this);
 
-//        ViewPump.init(
-//                ViewPump.builder()
-//                        .addInterceptor(new CalligraphyInterceptor(
-//                                new CalligraphyConfig.Builder()
-//                                        .setFontAttrId(R.attr.fontPath)
-//                                        .build()))
-//                        .build()
-//        );
     }
 
-    /**
-     * Set an specific calendar to the view and update de view
-     *
-     * @param date, the selected date
-     */
     public void setDate(@NotNull Date date) {
         currentCalendar.setTime(date);
         updateView();
     }
+
 
     @NotNull
     public Date getDate() {
@@ -226,7 +199,12 @@ public class CustomCalendarView extends LinearLayout {
 
     @Nullable
     public Date getSelectedDay() {
-        return lastSelectedDayCalendar.getTime();
+        if (lastSelectedDayCalendar == null || lastSelectedDayCalendar.getTime() == null) {
+            return getDate();
+        } else {
+            return lastSelectedDayCalendar.getTime();
+
+        }
     }
 
     public void markDayAsSelectedDay(@NotNull Date date) {
@@ -289,30 +267,6 @@ public class CustomCalendarView extends LinearLayout {
         this.shortWeekDays = shortWeekDays;
     }
 
-    public void markCircleImage1(@NotNull Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        ImageView circleImage1 = getCircleImage1(calendar);
-        circleImage1.setVisibility(View.VISIBLE);
-        if (lastSelectedDayCalendar != null && areInTheSameDay(calendar, lastSelectedDayCalendar)) {
-            DrawableCompat.setTint(circleImage1.getDrawable(), getColorCompatFromAttribute(getContext(), R.attr.calendar_view_selected_day_text_color));
-        } else {
-            DrawableCompat.setTint(circleImage1.getDrawable(), getColorCompatFromAttribute(getContext(), R.attr.calendar_view_circle_1));
-        }
-    }
-
-    public void markCircleImage2(@NotNull Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        ImageView circleImage2 = getCircleImage2(calendar);
-        circleImage2.setVisibility(View.VISIBLE);
-        if (lastSelectedDayCalendar != null && areInTheSameDay(calendar, lastSelectedDayCalendar)) {
-            DrawableCompat.setTint(circleImage2.getDrawable(), getColorCompatFromAttribute(getContext(), R.attr.calendar_view_selected_day_text_color));
-        } else {
-            DrawableCompat.setTint(circleImage2.getDrawable(), getColorCompatFromAttribute(getContext(), R.attr.calendar_view_circle_2));
-        }
-    }
-
     public void showDateTitle(boolean show) {
         if (show) {
             customCalendarMonthLayout.setVisibility(VISIBLE);
@@ -331,14 +285,13 @@ public class CustomCalendarView extends LinearLayout {
         leftButton = view.findViewById(R.id.leftButton);
         rightButton = view.findViewById(R.id.rightButton);
         dateTitle = view.findViewById(R.id.monthText);
-
+        showTaskOfDay = view.findViewById(R.id.showTaskOfDay);
         LayoutInflater inflate = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         for (int i = 0; i < 42; i++) {
 
             int weekIndex = (i % 7) + 1;
             ViewGroup dayOfTheWeekLayout = view.findViewWithTag(DAY_OF_THE_WEEK_LAYOUT + weekIndex);
 
-            // Create day of the month
             @SuppressLint("InflateParams")
             View dayOfTheMonthLayout = inflate.inflate(R.layout.calendar_day_of_the_month_layout, null);
             View dayOfTheMonthText = dayOfTheMonthLayout.findViewWithTag(DAY_OF_THE_MONTH_TEXT);
@@ -346,7 +299,6 @@ public class CustomCalendarView extends LinearLayout {
             View dayOfTheMonthCircleImage1 = dayOfTheMonthLayout.findViewWithTag(DAY_OF_THE_MONTH_CIRCLE_IMAGE_1);
             View dayOfTheMonthCircleImage2 = dayOfTheMonthLayout.findViewWithTag(DAY_OF_THE_MONTH_CIRCLE_IMAGE_2);
 
-            // Set tags to identify them
             int viewIndex = i + 1;
             dayOfTheMonthLayout.setTag(DAY_OF_THE_MONTH_LAYOUT + viewIndex);
             dayOfTheMonthText.setTag(DAY_OF_THE_MONTH_TEXT + viewIndex);
@@ -356,6 +308,14 @@ public class CustomCalendarView extends LinearLayout {
 
             dayOfTheWeekLayout.addView(dayOfTheMonthLayout);
         }
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) {
+            return false;
+        }
+        return false;
     }
 
     private void setUpEventListeners() {
@@ -390,7 +350,9 @@ public class CustomCalendarView extends LinearLayout {
             }
             customCalendarListener.onDateSelectorClick(getDate());
         });
-
+        showTaskOfDay.setOnClickListener(view -> {
+            customCalendarListener.onShowTaskOfDayClick(getSelectedDay());
+        });
     }
 
     private void setUpMonthLayout() {
@@ -534,6 +496,82 @@ public class CustomCalendarView extends LinearLayout {
         return MaterialColors.getColor(context, attributeId, Color.RED);
     }
 
+    @Override
+    public void onShowPress(@NonNull MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(@NonNull MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(@androidx.annotation.Nullable MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(@NonNull MotionEvent e) {
+
+    }
+
+    private static final int SWIPE_THRESHOLD = 100;
+    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+    private GestureDetector gestureDetector;
+
+    // ... inside your init method or a suitable initialization point:
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return true;
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        boolean result = false;
+        try {
+            float diffY = e2.getY() - e1.getY();
+            float diffX = e2.getX() - e1.getX();
+            if (Math.abs(diffX) > Math.abs(diffY)) {
+                if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffX > 0) {
+                        onSwipeRight();
+                    } else {
+                        onSwipeLeft();
+                    }
+                    result = true;
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return result;
+    }
+
+    public void onSwipeRight() {
+        currentCalendar.add(Calendar.MONTH, -1);
+        lastSelectedDayCalendar = null;
+        updateView();
+        if (customCalendarListener != null) {
+            customCalendarListener.onLeftButtonClick(); // Reuse your existing method
+        }
+    }
+
+    public void onSwipeLeft() {
+        currentCalendar.add(Calendar.MONTH, 1);
+        lastSelectedDayCalendar = null;
+        updateView();
+        if (customCalendarListener != null) {
+            customCalendarListener.onRightButtonClick(); // Reuse your existing method
+        }
+    }
+
     public interface CustomCalendarListener {
 
         void onDayClick(Date date);
@@ -545,6 +583,8 @@ public class CustomCalendarView extends LinearLayout {
         void onLeftButtonClick();
 
         void onDateSelectorClick(Date date);
+
+        void onShowTaskOfDayClick(Date date);
     }
 
 }

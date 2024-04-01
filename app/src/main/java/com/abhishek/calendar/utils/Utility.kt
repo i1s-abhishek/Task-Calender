@@ -8,6 +8,9 @@ import android.os.Build
 import android.view.View
 import android.widget.Toast
 import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 object Utility {
 
@@ -59,7 +62,11 @@ object Utility {
 
     }
 
-    fun showToast(context: Context?,message: String) {
+    fun showToast(context: Context?, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun getFormattedDate(date: Date): String {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date)
     }
 }

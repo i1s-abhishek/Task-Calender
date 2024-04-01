@@ -16,4 +16,5 @@
     <string name="added_task_message">Added Task</string>
     <string name="task_fetch_message">Task fetch</string>
     <string name="task_deleted_message">Task Deleted</string>
+    <string name="task_of_day_message">Task on this date is empty</string>
 </resources>

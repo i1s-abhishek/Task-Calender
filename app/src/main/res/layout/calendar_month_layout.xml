@@ -40,4 +40,14 @@
         app:srcCompat="@drawable/ic_arrow_right"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/showTaskOfDay"
+        style="@style/CalendarMonthArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/calendar_padding"
+        android:layout_marginRight="@dimen/calendar_padding"
+        app:srcCompat="@drawable/calendar_task_of_the_day"
+        tools:ignore="ContentDescription" />
+
 </LinearLayout>

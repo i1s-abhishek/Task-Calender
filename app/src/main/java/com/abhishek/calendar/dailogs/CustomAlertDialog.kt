@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.abhishek.calendar.R
 import com.abhishek.calendar.interfaces.OnTaskInputListener
+import java.util.Date
 
-class CustomAlertDialog(context: Context, private val onTaskInputListener: OnTaskInputListener) :
-    AlertDialog(context) {
+class CustomAlertDialog(
+    context: Context, private val onTaskInputListener: OnTaskInputListener, date: Date
+) : AlertDialog(context) {
 
     init {
         setCancelable(false)
@@ -25,7 +27,7 @@ class CustomAlertDialog(context: Context, private val onTaskInputListener: OnTas
             val description = editTextDescription.text.toString().trim()
 
             if (title.isNotEmpty() && description.isNotEmpty()) {
-                onTaskInputListener.onTaskInput(title, description)
+                onTaskInputListener.onTaskInput(title, description, date)
                 dialog.dismiss()
             } else {
                 val errorMessage = when {
