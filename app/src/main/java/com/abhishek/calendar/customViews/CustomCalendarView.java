@@ -1,5 +1,8 @@
 package com.abhishek.calendar.customViews;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
@@ -558,6 +561,7 @@ public class CustomCalendarView extends LinearLayout implements GestureDetector.
         currentCalendar.add(Calendar.MONTH, -1);
         lastSelectedDayCalendar = null;
         updateView();
+        animateTransition(-1);
         if (customCalendarListener != null) {
             customCalendarListener.onLeftButtonClick(); // Reuse your existing method
         }
@@ -566,10 +570,48 @@ public class CustomCalendarView extends LinearLayout implements GestureDetector.
     public void onSwipeLeft() {
         currentCalendar.add(Calendar.MONTH, 1);
         lastSelectedDayCalendar = null;
+        animateTransition(1);
         updateView();
         if (customCalendarListener != null) {
             customCalendarListener.onRightButtonClick(); // Reuse your existing method
         }
+    }
+//    public void onSwipeRight() {
+//        currentCalendar.add(Calendar.MONTH, -1);
+//        lastSelectedDayCalendar = null;
+//        animateTransition(-1);
+//    }
+//
+//    public void onSwipeLeft() {
+//        currentCalendar.add(Calendar.MONTH, 1);
+//        lastSelectedDayCalendar = null;
+//        animateTransition(1);
+//    }
+
+    private void animateTransition(final int direction) {
+        final float initialX = 0;
+        final float finalX = direction * -getWidth(); // If the width of your CustomCalendarView is not set, you can use some constant value or get it dynamically.
+
+        // Create translation animation
+        ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, initialX, finalX);
+        animator.setDuration(100); // Adjust the duration as needed
+        animator.start();
+
+        // Reset translation after animation ends
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                setTranslationX(0);
+                updateView();
+                if (customCalendarListener != null) {
+                    if (direction == -1) {
+                        customCalendarListener.onRightButtonClick(); // Reuse your existing method
+                    } else {
+                        customCalendarListener.onLeftButtonClick(); // Reuse your existing method
+                    }
+                }
+            }
+        });
     }
 
     public interface CustomCalendarListener {
