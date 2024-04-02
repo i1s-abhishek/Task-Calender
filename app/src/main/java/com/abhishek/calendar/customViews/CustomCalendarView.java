@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -560,10 +561,10 @@ public class CustomCalendarView extends LinearLayout implements GestureDetector.
     public void onSwipeRight() {
         currentCalendar.add(Calendar.MONTH, -1);
         lastSelectedDayCalendar = null;
-        updateView();
+        //updateView();
         animateTransition(-1);
         if (customCalendarListener != null) {
-            customCalendarListener.onLeftButtonClick(); // Reuse your existing method
+            customCalendarListener.onLeftButtonClick();
         }
     }
 
@@ -571,33 +572,19 @@ public class CustomCalendarView extends LinearLayout implements GestureDetector.
         currentCalendar.add(Calendar.MONTH, 1);
         lastSelectedDayCalendar = null;
         animateTransition(1);
-        updateView();
+       // updateView();
         if (customCalendarListener != null) {
-            customCalendarListener.onRightButtonClick(); // Reuse your existing method
+            customCalendarListener.onRightButtonClick();
         }
     }
-//    public void onSwipeRight() {
-//        currentCalendar.add(Calendar.MONTH, -1);
-//        lastSelectedDayCalendar = null;
-//        animateTransition(-1);
-//    }
-//
-//    public void onSwipeLeft() {
-//        currentCalendar.add(Calendar.MONTH, 1);
-//        lastSelectedDayCalendar = null;
-//        animateTransition(1);
-//    }
 
     private void animateTransition(final int direction) {
         final float initialX = 0;
-        final float finalX = direction * -getWidth(); // If the width of your CustomCalendarView is not set, you can use some constant value or get it dynamically.
-
-        // Create translation animation
+        final float finalX = direction * -getWidth();
         ObjectAnimator animator = ObjectAnimator.ofFloat(this, View.TRANSLATION_X, initialX, finalX);
-        animator.setDuration(100); // Adjust the duration as needed
+        animator.setDuration(150);
+        animator.setInterpolator(new AccelerateDecelerateInterpolator());
         animator.start();
-
-        // Reset translation after animation ends
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -605,14 +592,15 @@ public class CustomCalendarView extends LinearLayout implements GestureDetector.
                 updateView();
                 if (customCalendarListener != null) {
                     if (direction == -1) {
-                        customCalendarListener.onRightButtonClick(); // Reuse your existing method
+                        customCalendarListener.onRightButtonClick();
                     } else {
-                        customCalendarListener.onLeftButtonClick(); // Reuse your existing method
+                        customCalendarListener.onLeftButtonClick();
                     }
                 }
             }
         });
     }
+
 
     public interface CustomCalendarListener {
 
