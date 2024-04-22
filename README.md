@@ -1,5 +1,5 @@
 # Custom Calendar Application
-![Task Custom Calendar](https://github.com/i1s-abhishek/Task-Calender/blob/main/Task-calendar-app.png)
+![Task Custom Calendar](https://github.com/i1s-abhishek/Task-Custom-Calender/blob/main/Task-calendar-app.png)
 
 This is a simple calendar application with task management functionality. Users can select a year and month to view a calendar, add tasks to specific dates, and manage tasks.
 
@@ -33,6 +33,6 @@ git clone https://github.com/i1s-abhishek/Task-Calender.git
 
 
 You can directly refer this classes to understand how the code works:
-- Retrofit: Refer to these classes directly:  [Retrofit Classes](https://github.com/i1s-abhishek/Task-Calender/tree/main/app/src/main/java/com/abhishek/calendar/network)
-- Custom Calender views[Kotlin Classes](https://github.com/i1s-abhishek/Task-Calender/tree/main/app/src/main/java/com/abhishek/calendar/customViews)
-- DaggerHilt: [Dependency Injection](https://github.com/i1s-abhishek/Task-Calender/tree/main/app/src/main/java/com/abhishek/calendar/viewModels)
+- Retrofit: Refer to these classes directly:  [Retrofit Classes](https://github.com/i1s-abhishek/Task-Custom-Calender/tree/main/app/src/main/java/com/abhishek/calendar/network)
+- Custom Calender views[Kotlin Classes](https://github.com/i1s-abhishek/Task-Custom-Calender/tree/main/app/src/main/java/com/abhishek/calendar/customViews)
+- DaggerHilt: [Dependency Injection](https://github.com/i1s-abhishek/Task-Custom-Calender/tree/main/app/src/main/java/com/abhishek/calendar/viewModels)
