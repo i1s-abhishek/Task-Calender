@@ -5,7 +5,8 @@ This is a simple calendar application with task management functionality. Users 
 
 ## Features
 
-- Select Year and Month
+- Select Year and Month from Calender
+- Build Custom Calender without using 3rd party Library
 - View month calendar
 - Add tasks to specific dates
 - View list of tasks
