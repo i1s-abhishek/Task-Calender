@@ -1,8 +1,8 @@
 # Custom Calendar Application
 ![Task Custom Calendar](https://github.com/i1s-abhishek/Task-Custom-Calender/blob/main/Task-calendar-app.png)
 
-This is a simple calendar application with task management functionality. Users can select a year and month to view a calendar, add tasks to specific dates, and manage tasks.
-
+This is a simple Custom calendar application with task management functionality. Users can select a year and month to view a calendar, add tasks to specific dates, and manage tasks.
+ 
 ## Features
 
 - Select Year and Month from Calender
