@@ -1,5 +1,5 @@
-# Calendar Application
-![Task Calendar](https://github.com/i1s-abhishek/Task-Calender/blob/main/Task-calendar-app.png)
+# Custom Calendar Application
+![Task Custom Calendar](https://github.com/i1s-abhishek/Task-Calender/blob/main/Task-calendar-app.png)
 
 This is a simple calendar application with task management functionality. Users can select a year and month to view a calendar, add tasks to specific dates, and manage tasks.
 
